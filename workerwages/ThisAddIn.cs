@@ -19,6 +19,27 @@ namespace workerwages
         {
         }
 
+
+        #region GetActiveApplication Workbook Worksheet
+        // Application
+        public Excel.Application GetActiveApplication()
+        {
+            return (Excel.Application)Application.Application;
+        }
+        
+        // Workbook
+        public Excel.Workbook GetActiveWorkbook()
+        {
+            return (Excel.Workbook)Application.ActiveWorkbook;
+        }
+        // Worksheet
+        public Excel.Worksheet GetActiveWorksheet()
+        {
+            return (Excel.Worksheet)Application.ActiveSheet;
+        }
+        #endregion
+
+
         #region VSTO 生成的代码
 
         /// <summary>

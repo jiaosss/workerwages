@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+    <ribbon>
+        <tabs>
+            <tab idMso="TabAddIns">
+                <group id="group1" label="general toolkits">
+                    <button id="button1" onAction="button1_Click" label="选择目录" showImage="false" />
+                    <button id="findfile" onAction="findfile_Click" label="生成汇总表" showImage="false" />
+                    <editBox id="editBox1" label="已选择的文件夹路径" showLabel="false" showImage="false" />
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>
