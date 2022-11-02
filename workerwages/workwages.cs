@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace workerwages
 {
@@ -14,7 +13,7 @@ namespace workerwages
 
         }
 
-        private void findfile_Click(object sender, RibbonControlEventArgs e)
+        private void findfile_Click(object sender, RibbonControlEventArgs e) //计算按钮
         {
             if (path.Length == 0)
             {
@@ -22,28 +21,34 @@ namespace workerwages
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("您已选择了文件夹路径" + "\r\n" + path);
-                this.compute_wages(path);
+                this.compute_wages(path); //开始汇总表
             }
         }
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
             this.folderBrowserDialog1.ShowDialog();
-            this.editBox1.Text = this.folderBrowserDialog1.SelectedPath;
             path = this.folderBrowserDialog1.SelectedPath;
+            System.Windows.Forms.MessageBox.Show("您已选择了文件夹路径" + "\r\n" + path);
         }
 
-        private void compute_wages(string path1)
+        private void compute_wages(string path1) //开始汇总表
         {
+            Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
+            //excelapp.Visible = false;
             System.Windows.Forms.MessageBox.Show("正在计算");
-            System.IO.DirectoryInfo folder = new System.IO.DirectoryInfo(path);
+            //System.IO.DirectoryInfo folder = new System.IO.DirectoryInfo(path); //获取文件夹地址
 
-            foreach ( System.IO.FileInfo file in folder.GetFiles("*.*"))
-            {
-                System.Windows.Forms.MessageBox.Show(file.ToString());
-            }
+            //foreach (System.IO.FileInfo file in folder.GetFiles("*.*")) //遍历文件夹excel文件
+            //{
+            //    System.Windows.Forms.MessageBox.Show(file.ToString());
 
+            //}
+
+            //string file = "C: /Users/jiaos/Desktop/工人工资/已审/合正龙腾付款单 - 锴成建筑（非建行部分）-已审.xlsx";
+            excelapp = System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application") as Microsoft.Office.Interop.Excel.Application;
+            //Microsoft.Office.Interop.Excel.Range rg;
+            (excelapp.Range["B2:C5"]).Select();
 
 
         }
