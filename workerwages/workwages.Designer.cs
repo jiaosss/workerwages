@@ -38,6 +38,7 @@ namespace workerwages
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.button1 = this.Factory.CreateRibbonButton();
+            this.button2 = this.Factory.CreateRibbonButton();
             this.findfile = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
@@ -57,6 +58,7 @@ namespace workerwages
             // group1
             // 
             this.group1.Items.Add(this.button1);
+            this.group1.Items.Add(this.button2);
             this.group1.Items.Add(this.findfile);
             this.group1.Name = "group1";
             // 
@@ -68,6 +70,15 @@ namespace workerwages
             this.button1.OfficeImageId = "OpenAppointment";
             this.button1.ShowImage = true;
             this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button2.Label = "选择信息表";
+            this.button2.Name = "button2";
+            this.button2.OfficeImageId = "OpenAppointment";
+            this.button2.ShowImage = true;
+            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
             // 
             // findfile
             // 
@@ -113,6 +124,7 @@ namespace workerwages
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
     }
 
     partial class ThisRibbonCollection
