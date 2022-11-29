@@ -40,9 +40,11 @@ namespace workerwages
             this.button1 = this.Factory.CreateRibbonButton();
             this.findfile = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
+            this.label1 = this.Factory.CreateRibbonLabel();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -78,7 +80,13 @@ namespace workerwages
             // 
             // group2
             // 
+            this.group2.Items.Add(this.label1);
             this.group2.Name = "group2";
+            // 
+            // label1
+            // 
+            this.label1.Label = "v0.5.test";
+            this.label1.Name = "label1";
             // 
             // workwages
             // 
@@ -90,6 +98,8 @@ namespace workerwages
             this.tab1.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -102,6 +112,7 @@ namespace workerwages
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
     }
 
     partial class ThisRibbonCollection
