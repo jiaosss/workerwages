@@ -6,15 +6,18 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 
+
 namespace workerwages
 {
     public partial class workwages
     {
-        public string path = "";
-        public string path2 = "";
+        public string path = "";   //分表文件夹路径
+        public string path1 = "";  //分表文件路径
+        public string path2 = "";  //信息表路径
         public Excel.Application excelapp;
-        public string path1 = "";
         public int number_excel = 1;
+        public int number_raw = 1;
+        public int number_column = 1;
        
         private void workwages_Load(object sender, RibbonUIEventArgs e)
         {
@@ -26,6 +29,10 @@ namespace workerwages
             if (path.Length == 0)
             {
                 MessageBox.Show("请选择文件夹路径");
+            }
+            else if (path2.Length == 0)
+            {
+                MessageBox.Show("请选择信息表路径");
             }
             else
             {
@@ -57,7 +64,7 @@ namespace workerwages
         private void compute_wages(string path) //开始汇总表
         {
 
-            System.Windows.Forms.MessageBox.Show("正在计算");
+            System.Windows.Forms.MessageBox.Show("点击确认开始计算" + "\r\n" + "excel窗口关闭前请勿操作电脑！！！切记！！！");
             System.IO.DirectoryInfo folder = new System.IO.DirectoryInfo(path); //获取文件夹地址
 
             //获取当前空白excel文件
@@ -88,10 +95,10 @@ namespace workerwages
 
                 //复制指定文件内容至新建空白文件
                     
-                Excel.Range range_open = xlworksheet.Range["A2:I" + rng.Row.ToString()];
+                //Excel.Range range_open = xlworksheet.Range["A2:I" + rng.Row.ToString()];
                 
-                wsheet.Range["A1:I" + rng.Row.ToString()].NumberFormat = "@";   //设置格式
-                wsheet.Range["A1:I" + rng.Row.ToString()].Value2 = range_open.Value2;                //复制内容
+                //wsheet.Range["A1:I" + rng.Row.ToString()].NumberFormat = "@";   //设置格式
+                //wsheet.Range["A1:I" + rng.Row.ToString()].Value2 = range_open.Value2;                //复制内容
 
                 //汇总
                 if (number_excel == 1)
@@ -105,10 +112,34 @@ namespace workerwages
                     wsheet.Range["L1"].Value2 = "考勤表核对";
 
                     number_excel = number_excel + 1;
+                    number_raw = number_raw + 1;
 
+                    wsheet.Range["A" + number_raw.ToString() + ":M" + (rng.Row + number_raw - 1).ToString()].NumberFormat = "@";
+                    wsheet.Range["A" + number_raw.ToString()].Value2 = file.ToString();   //复制文件名
+                
+                    wsheet.Range["A" + number_raw.ToString() + ":H" + number_raw.ToString()].Merge();
+                
+                    //复制数据
+                    wsheet.Range["B" + (number_raw + 1).ToString() + ":B" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["B2:B" + rng.Row.ToString()].Value2;     //复制表头
+                    wsheet.Range["A" + (number_raw + 1).ToString() + ":A" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["C2:C" + rng.Row.ToString()].Value2;
+                    wsheet.Range["C" + (number_raw + 1).ToString() + ":H" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["D2:I" + rng.Row.ToString()].Value2;
+
+                    number_raw = number_raw + rng.Row + 1;
                 }
                 else
                 {
+                    wsheet.Range["A" + number_raw.ToString() + ":M" + (rng.Row + number_raw - 1).ToString()].NumberFormat = "@";
+                    wsheet.Range["A" + number_raw.ToString()].Value2 = file.ToString();   //复制文件名
+                    
+                    wsheet.Range["A" + number_raw.ToString() + ":H" + number_raw.ToString()].Merge();  //合并单元格
+                    
+                    //复制数据
+                    wsheet.Range["B" + ( number_raw + 1 ).ToString() + ":B" + ( number_raw + rng.Row ).ToString()].Value2 = xlworksheet.Range["B2:B" + rng.Row.ToString()].Value2;     //复制表头
+                    wsheet.Range["A" + ( number_raw + 1 ).ToString() + ":A" + ( number_raw + rng.Row ).ToString()].Value2 = xlworksheet.Range["C2:C" + rng.Row.ToString()].Value2;
+                    wsheet.Range["C" + ( number_raw + 1 ).ToString() + ":H" + ( number_raw + rng.Row ).ToString()].Value2 = xlworksheet.Range["D2:I" + rng.Row.ToString()].Value2;
+
+                    number_raw = number_raw + rng.Row + 1;
+
 
                 }
 
@@ -120,18 +151,24 @@ namespace workerwages
 
             }
 
+            //全局替换#N/A
+            wsheet.Range["A1:L" + number_raw.ToString()].Replace("#N/A", "");
 
             //设置自动列宽
-            wsheet.Columns.EntireColumn.AutoFit();                          
+            wsheet.Columns.EntireColumn.AutoFit();
+
+            //单元格居中
+            wsheet.Range["A1:L" + number_raw.ToString()].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter; //单元格横向居中
+            wsheet.Range["A1:L" + number_raw.ToString()].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;   //单元格竖向居中
 
             //保存汇总表
-            //new_xlapp.ActiveWorkbook.SaveAs(path + "\\汇总表.xlsx");
+            new_xlapp.ActiveWorkbook.SaveAs(path + "\\汇总表.xlsx");
 
             //关闭当前工作簿
-            //new_xlapp.ActiveWorkbook.Close(false);
+            new_xlapp.ActiveWorkbook.Close(false);
             
             //杀掉当前进程
-            //PublicMethod.Kill(new_xlapp);
+            PublicMethod.Kill(new_xlapp);
 
         }
 
