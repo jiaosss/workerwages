@@ -90,12 +90,12 @@ namespace workerwages
             // 
             // label1
             // 
-            this.label1.Label = "v1.2测试版";
+            this.label1.Label = "v2.0正式版";
             this.label1.Name = "label1";
             // 
             // label2
             // 
-            this.label2.Label = "表格合并测试";
+            this.label2.Label = "完成全部功能";
             this.label2.Name = "label2";
             // 
             // button1
@@ -141,6 +141,7 @@ namespace workerwages
             this.mergeexcel.Name = "mergeexcel";
             this.mergeexcel.OfficeImageId = "GroupAdpQueryType";
             this.mergeexcel.ShowImage = true;
+            this.mergeexcel.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mergeexcel_Click);
             // 
             // workwages
             // 

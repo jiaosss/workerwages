@@ -19,6 +19,7 @@ namespace workerwages
         public int number_raw = 1;   //汇总表行号
         public int number_column = 1;
         public int number_newinformation = 1; //信息表新增序号
+        public int hn = 2;//合并表格定位
 
         private void workwages_Load(object sender, RibbonUIEventArgs e)
         {
@@ -88,23 +89,23 @@ namespace workerwages
                 //当前路径
                 path1 = folder.ToString() + "\\" + file.ToString();
 
-                
+
 
                 //打开指定路径excel文件
                 Excel.Application xlapp = new Excel.Application();
                 Excel.Workbook xlworkbook = xlapp.Workbooks.Open(path1);
                 Excel.Worksheet xlworksheet = xlworkbook.Sheets[1];
 
-                
+
                 //寻找第一列最后一个非空单元格
                 Excel.Range rng = xlapp.Range["A65535"].End[Excel.XlDirection.xlUp];
                 //MessageBox.Show("A列中最后一个非空单元格是" + rng.Address[0, 0] + ",行号" + rng.Row.ToString() + ",数值" + rng.Text);
 
 
                 //复制指定文件内容至新建空白文件
-                    
+
                 //Excel.Range range_open = xlworksheet.Range["A2:I" + rng.Row.ToString()];
-                
+
                 //wsheet.Range["A1:I" + rng.Row.ToString()].NumberFormat = "@";   //设置格式
                 //wsheet.Range["A1:I" + rng.Row.ToString()].Value2 = range_open.Value2;                //复制内容
 
@@ -128,16 +129,16 @@ namespace workerwages
 
                     wsheet.Range["A" + number_raw.ToString() + ":M" + (rng.Row + number_raw - 1).ToString()].NumberFormat = "@";
                     wsheet.Range["A" + number_raw.ToString()].Value2 = file.ToString();   //复制文件名
-                
+
                     wsheet.Range["A" + number_raw.ToString() + ":H" + number_raw.ToString()].Merge();
-                
+
                     //复制数据
                     wsheet.Range["B" + (number_raw + 1).ToString() + ":B" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["B2:B" + rng.Row.ToString()].Value2;     //复制表头
                     wsheet.Range["A" + (number_raw + 1).ToString() + ":A" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["C2:C" + rng.Row.ToString()].Value2;
                     wsheet.Range["C" + (number_raw + 1).ToString() + ":H" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["D2:I" + rng.Row.ToString()].Value2;
 
                     //验证数据
-                    for (int i = 1; i < rng.Row ; i++)
+                    for (int i = 1; i < rng.Row; i++)
                     {
                         string j = Convert.ToString((wsheet.Range["H" + (number_raw + i).ToString()].Value2));
                         Excel.Range ranfind = insheet1.Range["H:H"].Find(j);
@@ -156,7 +157,7 @@ namespace workerwages
                             wsheet.Range["J" + (number_raw + i)].Value2 = "新增";
                             number_newinformation = number_newinformation + 1;
                         }
-                        
+
                     }
 
                     number_raw = number_raw + rng.Row + 1;
@@ -165,13 +166,13 @@ namespace workerwages
                 {
                     wsheet.Range["A" + number_raw.ToString() + ":M" + (rng.Row + number_raw - 1).ToString()].NumberFormat = "@";
                     wsheet.Range["A" + number_raw.ToString()].Value2 = file.ToString();   //复制文件名
-                    
+
                     wsheet.Range["A" + number_raw.ToString() + ":H" + number_raw.ToString()].Merge();  //合并单元格
-                    
+
                     //复制数据
-                    wsheet.Range["B" + ( number_raw + 1 ).ToString() + ":B" + ( number_raw + rng.Row ).ToString()].Value2 = xlworksheet.Range["B2:B" + rng.Row.ToString()].Value2;     //复制表头
-                    wsheet.Range["A" + ( number_raw + 1 ).ToString() + ":A" + ( number_raw + rng.Row ).ToString()].Value2 = xlworksheet.Range["C2:C" + rng.Row.ToString()].Value2;
-                    wsheet.Range["C" + ( number_raw + 1 ).ToString() + ":H" + ( number_raw + rng.Row ).ToString()].Value2 = xlworksheet.Range["D2:I" + rng.Row.ToString()].Value2;
+                    wsheet.Range["B" + (number_raw + 1).ToString() + ":B" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["B2:B" + rng.Row.ToString()].Value2;     //复制表头
+                    wsheet.Range["A" + (number_raw + 1).ToString() + ":A" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["C2:C" + rng.Row.ToString()].Value2;
+                    wsheet.Range["C" + (number_raw + 1).ToString() + ":H" + (number_raw + rng.Row).ToString()].Value2 = xlworksheet.Range["D2:I" + rng.Row.ToString()].Value2;
 
                     //验证数据
                     for (int i = 1; i < rng.Row; i++)
@@ -234,15 +235,16 @@ namespace workerwages
 
         }
 
+        //拆分表格
         private void splitexcel_Click(object sender, RibbonControlEventArgs e)
         {
-            
+
             //获取当前excel文件
             Excel.Application new_xlapp = Globals.ThisAddIn.Application;
             Excel.Workbook wbook = Globals.ThisAddIn.Application.ActiveWorkbook;  //当前活动workbook
             Excel.Worksheet wsheet = (Excel.Worksheet)wbook.ActiveSheet;          //当前活动sheet
 
-            
+
             string sc = JudgmentExcelColumn(wsheet);//判断最后非空列
             int hc = JudgmentExcelRaw(wsheet);   //判断最后非空行(数值)
 
@@ -251,7 +253,7 @@ namespace workerwages
             string[] Adata = new string[hc];
             for (int h = 0; h < hc; h++)
             {
-                Adata[h] = Convert.ToString( wsheet.Range["A" + (h+1).ToString()].Value2);
+                Adata[h] = Convert.ToString(wsheet.Range["A" + (h + 1).ToString()].Value2);
             }
             string[] AdataNoDvalues = Adata.Distinct().ToArray(); //删除重复值
 
@@ -267,13 +269,13 @@ namespace workerwages
                 Excel.Worksheet insheet1 = inbook.Sheets[1];
                 insheet1.Range["A1:" + sc + "1"].Value2 = wsheet.Range["A1:" + sc + "1"].Value2;
                 int n = 2;
-                for (int j = 1;j < hc;j++)
+                for (int j = 1; j < hc; j++)
                 {
-                    
+
                     if (AdataNoDvalues[i] == Convert.ToString(wsheet.Range["A" + (j + 1).ToString()].Value2))
                     {
                         insheet1.Range["A" + n.ToString() + ":" + sc + n.ToString()].NumberFormat = "@";
-                        insheet1.Range["A" + n.ToString() + ":" + sc + n.ToString()].Value2 = wsheet.Range["A" + (j + 1).ToString() + ":" + sc +(j + 1).ToString()].Value2;
+                        insheet1.Range["A" + n.ToString() + ":" + sc + n.ToString()].Value2 = wsheet.Range["A" + (j + 1).ToString() + ":" + sc + (j + 1).ToString()].Value2;
                         n = n + 1;
                     }
                 }
@@ -354,14 +356,66 @@ namespace workerwages
 
             //根据所获取的最大列数,获取到该列号名称
             //string sc = ColumnNames[ColumnCount - 1].ToString() + RowsCount.ToString();
-            
+
 
             return ColumnNames[ColumnCount - 1].ToString();
         }
 
+        //合并表格
+        private void mergeexcel_Click(object sender, RibbonControlEventArgs e)
+        {
+            //选择合并表格路径
+            MessageBox.Show("请选择合并表格路径");
+            this.folderBrowserDialog1.ShowDialog();
+            path = this.folderBrowserDialog1.SelectedPath;
 
+            //获取当前excel文件
+            Excel.Application new_xlapp = Globals.ThisAddIn.Application;
+            Excel.Workbook wbook = Globals.ThisAddIn.Application.ActiveWorkbook;  //当前活动workbook
+            Excel.Worksheet wsheet = (Excel.Worksheet)wbook.ActiveSheet;          //当前活动sheet
+
+
+            //遍历路径下文件
+            System.IO.DirectoryInfo folder = new System.IO.DirectoryInfo(path);
+            foreach (System.IO.FileInfo file in folder.GetFiles("*.*")) //遍历文件夹excel文件
+            {
+                //当前路径
+                path1 = folder.ToString() + "\\" + file.ToString();
+
+                //打开指定路径excel文件
+                Excel.Application xlapp = new Excel.Application();
+                Excel.Workbook xlworkbook = xlapp.Workbooks.Open(path1);
+                Excel.Worksheet xlworksheet = xlworkbook.Sheets[1];
+
+                //判断最后非空单元格
+                Excel.Range rng = xlapp.Range["A65535"].End[Excel.XlDirection.xlUp];
+                string sc = JudgmentExcelColumn(xlworksheet);//判断最后非空列
+                int hr = rng.Row;
+                //开始合并
+
+                //复制表头
+                wsheet.Range["A1:" + sc + "1"].NumberFormat = "@";
+                wsheet.Range["A1:" + sc + "1"].Value2 = xlworksheet.Range["A1:" + sc + "1"].Value2;
+                //复制内容
+                wsheet.Range["A" + hn.ToString() + ":" + sc + (hn + hr - 2).ToString()].NumberFormat = "@";
+                wsheet.Range["A" + hn.ToString() + ":" + sc + (hn + hr - 2).ToString()].Value2 = xlworksheet.Range["A2:" + sc + hr.ToString()].Value2;
+                hn = (hn + hr - 1);
+                                
+                //关闭当前工作簿
+                xlapp.ActiveWorkbook.Close(false);
+
+                //杀掉当前进程
+                PublicMethod.Kill(xlapp);
+                
+            }
+            //设置自动列宽
+            wsheet.Columns.EntireColumn.AutoFit();
+            
+
+            MessageBox.Show("合并完成");
+        }
     }
-
+        
 
 
 
