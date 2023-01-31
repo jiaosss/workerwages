@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace workerwages
 {
-    public partial class workwages
+    public partial class Workwages
     {
         public string path = "";   //分表文件夹路径
         public string path1 = "";  //分表文件路径
@@ -21,12 +21,12 @@ namespace workerwages
         public int number_newinformation = 1; //信息表新增序号
         public int hn = 2;//合并表格定位
 
-        private void workwages_Load(object sender, RibbonUIEventArgs e)
+        private void Workwages_Load(object sender, RibbonUIEventArgs e)
         {
 
         }
 
-        private void findfile_Click(object sender, RibbonControlEventArgs e) //计算按钮
+        private void Findfile_Click(object sender, RibbonControlEventArgs e) //计算按钮
         {
             if (path == string.Empty)
             {
@@ -38,18 +38,18 @@ namespace workerwages
             }
             else
             {
-                this.compute_wages(path); //开始汇总表                
+                this.Compute_wages(path); //开始汇总表                
             }
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void Button1_Click(object sender, RibbonControlEventArgs e)
         {
             this.folderBrowserDialog1.ShowDialog();
             path = this.folderBrowserDialog1.SelectedPath;
             MessageBox.Show("您已选择了文件夹路径" + "\r\n" + path);
         }
 
-        private void button2_Click(object sender, RibbonControlEventArgs e)
+        private void Button2_Click(object sender, RibbonControlEventArgs e)
         {
             OpenFileDialog openFd = new OpenFileDialog();
             openFd.ShowDialog();
@@ -63,7 +63,7 @@ namespace workerwages
 
 
 
-        private void compute_wages(string path) //开始汇总表
+        private void Compute_wages(string path) //开始汇总表
         {
 
             System.Windows.Forms.MessageBox.Show("点击确认开始计算" + "\r\n" + "excel窗口关闭前请勿操作电脑！！！切记！！！");
@@ -121,8 +121,8 @@ namespace workerwages
                     wsheet.Range["J1"].Value2 = "银行账户核对";
                     wsheet.Range["L1"].Value2 = "考勤表核对";
 
-                    number_excel = number_excel + 1;
-                    number_raw = number_raw + 1;
+                    number_excel++;
+                    number_raw++;
 
 
                     //复制第一个表的数据
@@ -155,7 +155,7 @@ namespace workerwages
                             insheet1.Range["A" + (inrng.Row + number_newinformation).ToString() + ":I" + (inrng.Row + number_newinformation).ToString()].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter; //单元格横向居中
                             insheet1.Range["A" + (inrng.Row + number_newinformation).ToString() + ":I" + (inrng.Row + number_newinformation).ToString()].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;   //单元格竖向居中
                             wsheet.Range["J" + (number_raw + i)].Value2 = "新增";
-                            number_newinformation = number_newinformation + 1;
+                            number_newinformation++;
                         }
 
                     }
@@ -192,7 +192,7 @@ namespace workerwages
                             insheet1.Range["A" + (inrng.Row + number_newinformation).ToString() + ":I" + (inrng.Row + number_newinformation).ToString()].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter; //单元格横向居中
                             insheet1.Range["A" + (inrng.Row + number_newinformation).ToString() + ":I" + (inrng.Row + number_newinformation).ToString()].VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;   //单元格竖向居中
                             wsheet.Range["J" + (number_raw + i)].Value2 = "新增";
-                            number_newinformation = number_newinformation + 1;
+                            number_newinformation++;
                         }
 
                     }
@@ -236,7 +236,7 @@ namespace workerwages
         }
 
         //拆分表格
-        private void splitexcel_Click(object sender, RibbonControlEventArgs e)
+        private void Splitexcel_Click(object sender, RibbonControlEventArgs e)
         {
 
             //获取当前excel文件
@@ -244,9 +244,11 @@ namespace workerwages
             Excel.Workbook wbook = Globals.ThisAddIn.Application.ActiveWorkbook;  //当前活动workbook
             Excel.Worksheet wsheet = (Excel.Worksheet)wbook.ActiveSheet;          //当前活动sheet
 
+            Excel.Range rng = wsheet.Range["A65535"].End[Excel.XlDirection.xlUp];//判断最后非空行(数值)
+            int hc = rng.Row;
+            string[] ColumnNames = JudgmentExcelColumnString(676);
+            string sc = JudgmentExcelColumn(wsheet,ColumnNames);//判断最后非空列
 
-            string sc = JudgmentExcelColumn(wsheet);//判断最后非空列
-            int hc = JudgmentExcelRaw(wsheet);   //判断最后非空行(数值)
 
 
             //删除A列重复值，做为拆分依据
@@ -276,7 +278,7 @@ namespace workerwages
                     {
                         insheet1.Range["A" + n.ToString() + ":" + sc + n.ToString()].NumberFormat = "@";
                         insheet1.Range["A" + n.ToString() + ":" + sc + n.ToString()].Value2 = wsheet.Range["A" + (j + 1).ToString() + ":" + sc + (j + 1).ToString()].Value2;
-                        n = n + 1;
+                        n++;
                     }
                 }
 
@@ -298,24 +300,12 @@ namespace workerwages
 
             }
             MessageBox.Show("拆分完成");
-
         }
 
 
-        public int JudgmentExcelRaw(Excel.Worksheet fristsheet)  //判断最后非空行
-        {
-            Excel.Worksheet FristSheet = fristsheet;
-            int RowsCount = FristSheet.UsedRange.Cells.Rows.Count;
-            return RowsCount;
-        }
-
-
-
-
-        public string JudgmentExcelColumn(Excel.Worksheet fristsheet)  //判断最后非空列
+        private string[] JudgmentExcelColumnString(int SecondColumnCount)
         {
             string[] ColumnName = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-            int SecondColumnCount = 676;
             string[] ColumnNames = new string[SecondColumnCount];
 
             for (int i = 0; i < ColumnName.Length; i++)
@@ -331,7 +321,7 @@ namespace workerwages
                     if (n + j < SecondColumnCount)
                     {
                         ColumnNames[n] = ColumnName[i] + ColumnName[j];
-                        n = n + 1;
+                        n++;
                     }
                     else
                     {
@@ -344,6 +334,12 @@ namespace workerwages
                 }
 
             }
+            return ColumnNames;
+        }
+        
+        public string JudgmentExcelColumn(Excel.Worksheet fristsheet,string[] ColumnNames)  //判断最后非空列
+        {
+            
 
 
             //指定要操作的Sheet
@@ -362,8 +358,11 @@ namespace workerwages
         }
 
         //合并表格
-        private void mergeexcel_Click(object sender, RibbonControlEventArgs e)
+        private void Mergeexcel_Click(object sender, RibbonControlEventArgs e)
         {
+            //判断非空列前置条件
+            string[] ColumnNames = JudgmentExcelColumnString(676);
+            
             //选择合并表格路径
             MessageBox.Show("请选择合并表格路径");
             this.folderBrowserDialog1.ShowDialog();
@@ -389,8 +388,9 @@ namespace workerwages
 
                 //判断最后非空单元格
                 Excel.Range rng = xlapp.Range["A65535"].End[Excel.XlDirection.xlUp];
-                string sc = JudgmentExcelColumn(xlworksheet);//判断最后非空列
                 int hr = rng.Row;
+                string sc = JudgmentExcelColumn(wsheet, ColumnNames);//判断最后非空列
+
                 //开始合并
 
                 //复制表头
@@ -427,8 +427,8 @@ namespace workerwages
             {
                 IntPtr t = new IntPtr(excel.Hwnd);//得到这个句柄，具体作用是得到这块内存入口 
 
-                int k = 0;
-                GetWindowThreadProcessId(t, out k);   //得到本进程唯一标志k
+                //int k = 0;
+                GetWindowThreadProcessId(t, out int k);   //得到本进程唯一标志k
                 System.Diagnostics.Process p = System.Diagnostics.Process.GetProcessById(k);   //得到对进程k的引用
                 p.Kill();     //关闭进程k
             }

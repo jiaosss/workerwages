@@ -1,14 +1,14 @@
 ﻿
 namespace workerwages
 {
-    partial class workwages : Microsoft.Office.Tools.Ribbon.RibbonBase
+    partial class Workwages : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
         /// <summary>
         /// 必需的设计器变量。
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        public workwages()
+        public Workwages()
             : base(Globals.Factory.GetRibbonFactory())
         {
             InitializeComponent();
@@ -37,17 +37,17 @@ namespace workerwages
         {
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.button1 = this.Factory.CreateRibbonButton();
+            this.button2 = this.Factory.CreateRibbonButton();
+            this.findfile = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
+            this.splitexcel = this.Factory.CreateRibbonButton();
             this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.mergeexcel = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
             this.label2 = this.Factory.CreateRibbonLabel();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.button1 = this.Factory.CreateRibbonButton();
-            this.button2 = this.Factory.CreateRibbonButton();
-            this.findfile = this.Factory.CreateRibbonButton();
-            this.splitexcel = this.Factory.CreateRibbonButton();
-            this.mergeexcel = this.Factory.CreateRibbonButton();
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
             this.group3.SuspendLayout();
@@ -70,6 +70,33 @@ namespace workerwages
             this.group1.Label = "工人账号信息核对";
             this.group1.Name = "group1";
             // 
+            // button1
+            // 
+            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button1.Label = "选择目录";
+            this.button1.Name = "button1";
+            this.button1.OfficeImageId = "OpenAppointment";
+            this.button1.ShowImage = true;
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button2.Label = "选择信息表";
+            this.button2.Name = "button2";
+            this.button2.OfficeImageId = "FileNewDocument";
+            this.button2.ShowImage = true;
+            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Button2_Click);
+            // 
+            // findfile
+            // 
+            this.findfile.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.findfile.Label = "生成汇总表";
+            this.findfile.Name = "findfile";
+            this.findfile.OfficeImageId = "GroupNavigate";
+            this.findfile.ShowImage = true;
+            this.findfile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Findfile_Click);
+            // 
             // group3
             // 
             this.group3.Items.Add(this.splitexcel);
@@ -78,9 +105,27 @@ namespace workerwages
             this.group3.Label = "表格操作";
             this.group3.Name = "group3";
             // 
+            // splitexcel
+            // 
+            this.splitexcel.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.splitexcel.Label = "拆分表格";
+            this.splitexcel.Name = "splitexcel";
+            this.splitexcel.OfficeImageId = "ContactCardCopy";
+            this.splitexcel.ShowImage = true;
+            this.splitexcel.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Splitexcel_Click);
+            // 
             // separator1
             // 
             this.separator1.Name = "separator1";
+            // 
+            // mergeexcel
+            // 
+            this.mergeexcel.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.mergeexcel.Label = "合并表格";
+            this.mergeexcel.Name = "mergeexcel";
+            this.mergeexcel.OfficeImageId = "GroupAdpQueryType";
+            this.mergeexcel.ShowImage = true;
+            this.mergeexcel.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Mergeexcel_Click);
             // 
             // group2
             // 
@@ -90,65 +135,20 @@ namespace workerwages
             // 
             // label1
             // 
-            this.label1.Label = "v2.0正式版";
+            this.label1.Label = "v2.1正式版";
             this.label1.Name = "label1";
             // 
             // label2
             // 
-            this.label2.Label = "完成全部功能";
+            this.label2.Label = "优化代码逻辑，调高效率";
             this.label2.Name = "label2";
-            // 
-            // button1
-            // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Label = "选择目录";
-            this.button1.Name = "button1";
-            this.button1.OfficeImageId = "OpenAppointment";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Label = "选择信息表";
-            this.button2.Name = "button2";
-            this.button2.OfficeImageId = "FileNewDocument";
-            this.button2.ShowImage = true;
-            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
-            // 
-            // findfile
-            // 
-            this.findfile.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.findfile.Label = "生成汇总表";
-            this.findfile.Name = "findfile";
-            this.findfile.OfficeImageId = "GroupNavigate";
-            this.findfile.ShowImage = true;
-            this.findfile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.findfile_Click);
-            // 
-            // splitexcel
-            // 
-            this.splitexcel.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.splitexcel.Label = "拆分表格";
-            this.splitexcel.Name = "splitexcel";
-            this.splitexcel.OfficeImageId = "ContactCardCopy";
-            this.splitexcel.ShowImage = true;
-            this.splitexcel.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.splitexcel_Click);
-            // 
-            // mergeexcel
-            // 
-            this.mergeexcel.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.mergeexcel.Label = "合并表格";
-            this.mergeexcel.Name = "mergeexcel";
-            this.mergeexcel.OfficeImageId = "GroupAdpQueryType";
-            this.mergeexcel.ShowImage = true;
-            this.mergeexcel.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.mergeexcel_Click);
             // 
             // workwages
             // 
             this.Name = "workwages";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.tab1);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.workwages_Load);
+            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Workwages_Load);
             this.tab1.ResumeLayout(false);
             this.tab1.PerformLayout();
             this.group1.ResumeLayout(false);
@@ -180,9 +180,9 @@ namespace workerwages
 
     partial class ThisRibbonCollection
     {
-        internal workwages workwages
+        internal Workwages workwages
         {
-            get { return this.GetRibbon<workwages>(); }
+            get { return this.GetRibbon<Workwages>(); }
         }
     }
 }
